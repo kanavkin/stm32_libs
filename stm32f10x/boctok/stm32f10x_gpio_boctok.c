@@ -1,6 +1,6 @@
-#include "stm32f10x.h"
-#include "boctok_types.h"
-#include "stm32_gpio.h"
+#include "../spl/stm32f10x.h"
+#include "../../boctok_types.h"
+#include "stm32f10x_gpio_boctok.h"
 
 void GPIO_configure(GPIO_TypeDef * port, uint32_t pin, uint32_t setup)
 {

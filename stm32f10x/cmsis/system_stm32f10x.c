@@ -62,7 +62,8 @@
   * @{
   */
 
-#include "stm32f10x.h"
+/* modified include path to match boctok stm32_libs structure */
+#include "../spl/stm32f10x.h"
 
 /**
   * @}
