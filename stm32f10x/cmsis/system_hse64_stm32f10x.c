@@ -1,5 +1,5 @@
  
-#include "../spl/stm32f10x.h"
+#include "../stm32f10x.h"
     
 
 uint32_t SystemCoreClock = 64000000;
