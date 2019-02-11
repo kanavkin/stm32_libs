@@ -1,4 +1,4 @@
-#include "../spl/stm32f10x.h"
+#include "../stm32f10x.h"
 #include "../../boctok_types.h"
 #include "stm32f10x_gpio_boctok.h"
 
