@@ -3,6 +3,8 @@
 
 #include "boctok_types.h"
 
+
+
 /**
 how GPIO on STM32 looks like:
 - GPIO ports A..G
@@ -55,6 +57,7 @@ AFIO EXTI mapping
 #define EXTI_MAP_GPIOE  0x04
 #define EXTI_MAP_GPIOF  0x05
 #define EXTI_MAP_GPIOG  0x06
+#define EXTI_MAP_GPIOH  0x07
 
 
 
@@ -72,7 +75,7 @@ typedef enum {
 
 
 void GPIO_configure(GPIO_TypeDef * port, uint32_t pin, uint32_t setup);
-void AFIO_map_EXTI(uint32_t line, uint32_t port);
+void SYSCFG_map_EXTI(uint32_t line, uint32_t port);
 void gpio_set_pin(GPIO_TypeDef * Port, VU32 Pin, output_pin_t Level);
 
 #endif // STM32_GPIO_H_INCLUDED
