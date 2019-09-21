@@ -21,31 +21,24 @@ how GPIO on STM32 looks like:
 */
 
 /**
-remember to enable clock
-RCC->APB2ENR |= RCC_APB2Periph_GPIOx;
-or disable
-RCC->APB1ENR &= ~RCC_APB2Periph_GPIOx;
+remember to enable clock!
 */
+#define GPIO_MODE_IN        0x00
+#define GPIO_MODE_OUT       0x01
+#define GPIO_MODE_AF        0x02
+#define GPIO_MODE_ANALOG    0x03
 
-#define GPIO_IN_PUD         0x08
-#define GPIO_IN_FLOAT       0x04
-#define GPIO_ANALOG         0x00
+#define GPIO_OUT_PP         0x00
+#define GPIO_OUT_OD         0x01
 
-#define GPIO_OUT_PP_2MHZ    0x02
-#define GPIO_OUT_OD_2MHZ    0x06
-#define GPIO_AF_PP_2MHZ     0x0A
-#define GPIO_AF_OD_2MHZ     0x0E
+#define GPIO_SPEED_LOW      0x00
+#define GPIO_SPEED_MID      0x01
+#define GPIO_SPEED_HIGH     0x02
+#define GPIO_SPEED_VERY_HIGH 0x03
 
-#define GPIO_OUT_PP_10MHZ   0x01
-#define GPIO_OUT_OD_10MHZ   0x05
-#define GPIO_AF_PP_10MHZ    0x09
-#define GPIO_AF_OD_10MHZ    0x0D
-
-#define GPIO_OUT_PP_50MHz   0x03
-#define GPIO_OUT_OD_50MHz   0x07
-#define GPIO_AF_PP_50MHZ    0x0B
-#define GPIO_AF_OD_50MHZ    0x0F
-
+#define GPIO_PULL_NONE      0x00
+#define GPIO_PULL_UP      0x01
+#define GPIO_PULL_DOWN      0x02
 
 /**
 AFIO EXTI mapping
@@ -58,6 +51,7 @@ AFIO EXTI mapping
 #define EXTI_MAP_GPIOF  0x05
 #define EXTI_MAP_GPIOG  0x06
 #define EXTI_MAP_GPIOH  0x07
+
 
 
 
@@ -74,8 +68,9 @@ typedef enum {
 
 
 
-void GPIO_configure(GPIO_TypeDef * port, uint32_t pin, uint32_t setup);
-void SYSCFG_map_EXTI(uint32_t line, uint32_t port);
+void GPIO_configure(GPIO_TypeDef * Port, U32 Pin, U32 Mode, U32 OutputType, U32 Speed, U32 Pud);
+void SYSCFG_map_EXTI(U32 line, U32 port);
 void gpio_set_pin(GPIO_TypeDef * Port, VU32 Pin, output_pin_t Level);
+void GPIO_SetAF(GPIO_TypeDef* Port, U16 Pin, U8 Function);
 
 #endif // STM32_GPIO_H_INCLUDED

@@ -1,56 +1,33 @@
 #include "stm32f4xx.h"
 #include "boctok_types.h"
 #include "stm32f4xx_gpio.h"
-/*
-
-#define GPIO_IN_PUD         0x08
-#define GPIO_IN_FLOAT       0x04
-#define GPIO_ANALOG         0x00
-
-#define GPIO_OUT_PP_2MHZ    0x02
-#define GPIO_OUT_OD_2MHZ    0x06
-#define GPIO_AF_PP_2MHZ     0x0A
-#define GPIO_AF_OD_2MHZ     0x0E
-
-#define GPIO_OUT_PP_10MHZ   0x01
-#define GPIO_OUT_OD_10MHZ   0x05
-#define GPIO_AF_PP_10MHZ    0x09
-#define GPIO_AF_OD_10MHZ    0x0D
-
-#define GPIO_OUT_PP_50MHz   0x03
-#define GPIO_OUT_OD_50MHz   0x07
-#define GPIO_AF_PP_50MHZ    0x0B
-#define GPIO_AF_OD_50MHZ    0x0F
-*/
 
 
-
-void GPIO_configure(GPIO_TypeDef * port, uint32_t pin, uint32_t setup)
+void GPIO_configure(GPIO_TypeDef * Port, U32 Pin, U32 Mode, U32 OutputType, U32 Speed, U32 Pud)
 {
-    if(pin < 8)
+    //GPIO port pin range 0..15!
+    if(Pin > 15)
     {
-        /**
-        CRL
-        pins 0..7
-        clear old values first, even after reset there is 0x04!
-        */
-        /*
-        port->CRL &= (uint32_t) ~(0x0F << (pin * 4));
-        port->CRL |= (uint32_t)(setup << (pin * 4));
-        */
+        return;
+        //TODO log warning
     }
-    else
-    {
-        /**
-        CRH
-        pins 8..15
-        clear old values first, even after reset there is 0x04!
-        */
-        /*
-        port->CRH &= (uint32_t) ~(0x0F << ((pin - 8) * 4));
-        port->CRH |= (uint32_t)(setup << ((pin - 8) * 4));
-        */
-    }
+
+    //Mode
+    Port->MODER &= (U32) ~(0x02 << (Pin * 2));
+    Port->MODER |= (U32) (Mode << (Pin * 2));
+
+    //OutputType
+    Port->OTYPER &= (U32) ~(0x01 << Pin);
+    Port->OTYPER |= (U32) (OutputType << Pin);
+
+    //Speed
+    Port->OSPEEDR &= (U32) ~(0x02 << (Pin * 2));
+    Port->OSPEEDR |= (U32) (Speed << (Pin * 2));
+
+    //Pullup Pulldown
+    Port->PUPDR &= (U32) ~(0x02 << (Pin * 2));
+    Port->PUPDR |= (U32) (Pud << (Pin * 2));
+
 }
 
 
@@ -70,27 +47,27 @@ void GPIO_configure(GPIO_TypeDef * port, uint32_t pin, uint32_t setup)
   * @retval None
   */
 
-void SYSCFG_map_EXTI(uint32_t line, uint32_t port)
+void SYSCFG_map_EXTI(U32 line, U32 port)
 {
     if(line < 4)
     {
-        SYSCFG->EXTICR[0] &= (uint32_t) ~(0x0F << (line * 4));
-        SYSCFG->EXTICR[0] |= (uint32_t)(port << (line * 4));
+        SYSCFG->EXTICR[0] &= (U32) ~(0x0F << (line * 4));
+        SYSCFG->EXTICR[0] |= (U32)(port << (line * 4));
     }
     else if(line < 8)
     {
-        SYSCFG->EXTICR[1] &= (uint32_t) ~(0x0F << ((line -4) * 4));
-        SYSCFG->EXTICR[1] |= (uint32_t)(port << ((line -4) * 4));
+        SYSCFG->EXTICR[1] &= (U32) ~(0x0F << ((line -4) * 4));
+        SYSCFG->EXTICR[1] |= (U32)(port << ((line -4) * 4));
     }
     else if(line < 12)
     {
-        SYSCFG->EXTICR[2] &= (uint32_t) ~(0x0F << ((line -8) * 4));
-        SYSCFG->EXTICR[2] |= (uint32_t)(port << ((line -8) * 4));
+        SYSCFG->EXTICR[2] &= (U32) ~(0x0F << ((line -8) * 4));
+        SYSCFG->EXTICR[2] |= (U32)(port << ((line -8) * 4));
     }
     else if(line < 16)
     {
-        SYSCFG->EXTICR[3] &= (uint32_t) ~(0x0F << ((line -12) * 4));
-        SYSCFG->EXTICR[3] |= (uint32_t)(port << ((line -12) * 4));
+        SYSCFG->EXTICR[3] &= (U32) ~(0x0F << ((line -12) * 4));
+        SYSCFG->EXTICR[3] |= (U32)(port << ((line -12) * 4));
     }
 }
 
@@ -148,3 +125,41 @@ void gpio_set_pin(GPIO_TypeDef * Port, VU32 Pin, output_pin_t Level)
     }
 }
 
+
+/**
+  * @brief  Changes the AF mapping of the specified pin.
+  * @param  Port
+  * @param  Pin: specifies the pin for the Alternate function where x can be (0..15).
+  * @param  Function: sets the AF number (0..15)
+
+  * @retval None
+  */
+void GPIO_SetAF(GPIO_TypeDef* Port, U16 Pin, U8 Function)
+{
+    //GPIO port pin range 0..15!
+    if(Pin > 15)
+    {
+        return;
+        //TODO log warning
+    }
+
+    //AF range 0..15!
+    if(Function > 15)
+    {
+        return;
+        //TODO log warning
+    }
+
+
+    if(Pin < 8)
+    {
+        Port->AFR[0] &= (U32) ~(0x0F << (Pin * 4));
+        Port->AFR[0] |= (U32)(Function << (Pin * 4));
+    }
+    else
+    {
+        Port->AFR[1] &= (U32) ~(0x0F << ((Pin -8) * 4));
+        Port->AFR[1] |= (U32)(Function << ((Pin -8) * 4));
+    }
+
+}
