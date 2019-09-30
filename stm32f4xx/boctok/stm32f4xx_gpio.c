@@ -13,7 +13,7 @@ void GPIO_configure(GPIO_TypeDef * Port, U32 Pin, U32 Mode, U32 OutputType, U32 
     }
 
     //Mode
-    Port->MODER &= (U32) ~(0x02 << (Pin * 2));
+    Port->MODER &= (U32) ~(0x03 << (Pin * 2));
     Port->MODER |= (U32) (Mode << (Pin * 2));
 
     //OutputType
@@ -21,11 +21,11 @@ void GPIO_configure(GPIO_TypeDef * Port, U32 Pin, U32 Mode, U32 OutputType, U32 
     Port->OTYPER |= (U32) (OutputType << Pin);
 
     //Speed
-    Port->OSPEEDR &= (U32) ~(0x02 << (Pin * 2));
+    Port->OSPEEDR &= (U32) ~(0x03 << (Pin * 2));
     Port->OSPEEDR |= (U32) (Speed << (Pin * 2));
 
     //Pullup Pulldown
-    Port->PUPDR &= (U32) ~(0x02 << (Pin * 2));
+    Port->PUPDR &= (U32) ~(0x03 << (Pin * 2));
     Port->PUPDR |= (U32) (Pud << (Pin * 2));
 
 }
@@ -75,13 +75,13 @@ void SYSCFG_map_EXTI(U32 line, U32 port)
 /**
 helper functions
 */
-inline void gpio_set_pin_high(GPIO_TypeDef * Port, VU32 Pin)
+void gpio_set_pin_high(GPIO_TypeDef * Port, VU32 Pin)
 {
     //on
     Port->BSRR= (U32) (1<< Pin);
 }
 
-inline void gpio_set_pin_low(GPIO_TypeDef * Port, VU32 Pin)
+void gpio_set_pin_low(GPIO_TypeDef * Port, VU32 Pin)
 {
     //off
     Port->BSRR= (U32) (1<< (Pin + 16));
