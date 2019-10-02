@@ -33,41 +33,35 @@ void GPIO_configure(GPIO_TypeDef * Port, U32 Pin, U32 Mode, U32 OutputType, U32 
 
 /**
   * @brief  Selects the GPIO pin used as EXTI Line.
-  * @param  EXTI_PortSourceGPIOx : selects the GPIO port to be used as source for
-  *          EXTI lines where x can be (A..K) for STM32F42xxx/43xxx devices, (A..I)
-  *          for STM32F405xx/407xx and STM32F415xx/417xx devices or (A, B, C, D and H)
-  *          for STM32401xx devices.
+  * @param  Port : selects the GPIO port to be used as source for this line
   *
-  * @param  EXTI_PinSourcex: specifies the EXTI line to be configured.
-  *           This parameter can be EXTI_PinSourcex where x can be (0..15, except
-  *           for EXTI_PortSourceGPIOI x can be (0..11) for STM32F405xx/407xx
-  *           and STM32F405xx/407xx devices and for EXTI_PortSourceGPIOK x can
-  *           be (0..7) for STM32F42xxx/43xxx devices.
-  *
+  * @param  Line: specifies the EXTI line to be configured.
+  *           GPIOx-1 maps to line 1
+  *           GPIOx-2 maps to line 2
+  *           and so on
   * @retval None
   */
-
-void SYSCFG_map_EXTI(U32 line, U32 port)
+void SYSCFG_map_EXTI(U32 Line, U32 Port)
 {
-    if(line < 4)
+    if(Line < 4)
     {
-        SYSCFG->EXTICR[0] &= (U32) ~(0x0F << (line * 4));
-        SYSCFG->EXTICR[0] |= (U32)(port << (line * 4));
+        SYSCFG->EXTICR[0] &= (U32) ~(0x0F << (Line * 4));
+        SYSCFG->EXTICR[0] |= (U32)(Port << (Line * 4));
     }
-    else if(line < 8)
+    else if(Line < 8)
     {
-        SYSCFG->EXTICR[1] &= (U32) ~(0x0F << ((line -4) * 4));
-        SYSCFG->EXTICR[1] |= (U32)(port << ((line -4) * 4));
+        SYSCFG->EXTICR[1] &= (U32) ~(0x0F << ((Line -4) * 4));
+        SYSCFG->EXTICR[1] |= (U32)(Port << ((Line -4) * 4));
     }
-    else if(line < 12)
+    else if(Line < 12)
     {
-        SYSCFG->EXTICR[2] &= (U32) ~(0x0F << ((line -8) * 4));
-        SYSCFG->EXTICR[2] |= (U32)(port << ((line -8) * 4));
+        SYSCFG->EXTICR[2] &= (U32) ~(0x0F << ((Line -8) * 4));
+        SYSCFG->EXTICR[2] |= (U32)(Port << ((Line -8) * 4));
     }
-    else if(line < 16)
+    else if(Line < 16)
     {
-        SYSCFG->EXTICR[3] &= (U32) ~(0x0F << ((line -12) * 4));
-        SYSCFG->EXTICR[3] |= (U32)(port << ((line -12) * 4));
+        SYSCFG->EXTICR[3] &= (U32) ~(0x0F << ((Line -12) * 4));
+        SYSCFG->EXTICR[3] |= (U32)(Port << ((Line -12) * 4));
     }
 }
 

@@ -46,10 +46,6 @@ AFIO EXTI mapping
 #define EXTI_MAP_GPIOA  0x00
 #define EXTI_MAP_GPIOB  0x01
 #define EXTI_MAP_GPIOC  0x02
-#define EXTI_MAP_GPIOD  0x03
-#define EXTI_MAP_GPIOE  0x04
-#define EXTI_MAP_GPIOF  0x05
-#define EXTI_MAP_GPIOG  0x06
 #define EXTI_MAP_GPIOH  0x07
 
 
