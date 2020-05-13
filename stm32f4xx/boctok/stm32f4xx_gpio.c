@@ -14,19 +14,38 @@ void GPIO_configure(GPIO_TypeDef * Port, U32 Pin, U32 Mode, U32 OutputType, U32 
 
     //Mode
     Port->MODER &= (U32) ~(0x03 << (Pin * 2));
-    Port->MODER |= (U32) (Mode << (Pin * 2));
+
+    if(Mode)
+    {
+        Port->MODER |= (U32) (Mode << (Pin * 2));
+    }
+
 
     //OutputType
-    Port->OTYPER &= (U32) ~(0x01 << Pin);
-    Port->OTYPER |= (U32) (OutputType << Pin);
+    Port->OTYPER &= (U16) ~(0x01 << Pin);
+
+    if(OutputType)
+    {
+        Port->OTYPER |= (U16) (OutputType << Pin);
+    }
+
 
     //Speed
     Port->OSPEEDR &= (U32) ~(0x03 << (Pin * 2));
-    Port->OSPEEDR |= (U32) (Speed << (Pin * 2));
+
+    if(Speed)
+    {
+        Port->OSPEEDR |= (U32) (Speed << (Pin * 2));
+    }
+
 
     //Pullup Pulldown
     Port->PUPDR &= (U32) ~(0x03 << (Pin * 2));
-    Port->PUPDR |= (U32) (Pud << (Pin * 2));
+
+    if(Pud)
+    {
+        Port->PUPDR |= (U32) (Pud << (Pin * 2));
+    }
 
 }
 

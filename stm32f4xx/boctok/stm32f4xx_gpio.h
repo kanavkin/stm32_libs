@@ -37,7 +37,7 @@ remember to enable clock!
 #define GPIO_SPEED_VERY_HIGH 0x03
 
 #define GPIO_PULL_NONE      0x00
-#define GPIO_PULL_UP      0x01
+#define GPIO_PULL_UP        0x01
 #define GPIO_PULL_DOWN      0x02
 
 /**
