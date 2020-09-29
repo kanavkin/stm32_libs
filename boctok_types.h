@@ -23,6 +23,8 @@ typedef volatile int16_t    VS16;
 typedef volatile uint32_t    VU32;
 typedef volatile int32_t    VS32;
 
+typedef float F32;
+typedef volatile float VF32;
 
 #define FALSE 0
 #define TRUE 0x01
