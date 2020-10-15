@@ -56,9 +56,9 @@ to set port pins
 */
 typedef enum {
 
-    ON,
-    OFF,
-    TOGGLE
+    PIN_ON,
+    PIN_OFF,
+    PIN_TOGGLE
 
 } output_pin_t;
 

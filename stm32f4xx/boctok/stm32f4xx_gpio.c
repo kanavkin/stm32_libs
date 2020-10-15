@@ -115,11 +115,11 @@ void gpio_set_pin(GPIO_TypeDef * Port, VU32 Pin, output_pin_t Level)
         //TODO log warning
     }
 
-    if(Level == ON)
+    if(Level == PIN_ON)
     {
         gpio_set_pin_high(Port, Pin);
     }
-    else if(Level == TOGGLE)
+    else if(Level == PIN_TOGGLE)
     {
         if(Port->ODR & (U32) (1<< Pin))
         {
